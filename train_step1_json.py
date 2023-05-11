@@ -45,7 +45,7 @@ dataset_data = [
     {
         "instruction": "Detect the sentiment of the tweet.",
         "input": row_dict["Tweet"],
-        "output": sentiment_score_to_name(row_dict["Sentiment"])
+        "output": sentiment_score_to_name(row_dict["sent_score"])
     }
     for row_dict in df.to_dict(orient="records")
 ]
