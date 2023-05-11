@@ -33,8 +33,7 @@ df.head()
 
 
 def sentiment_score_to_name(score: float):
-    logging.debug('This is a debug message - '+score)
-    score = float(score)
+    logging.debug(score)
     if score > 0:
         return "Positive"
     elif score < 0:
