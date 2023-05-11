@@ -201,8 +201,8 @@ model.save_pretrained(OUTPUT_DIR)
 
 
 
-#from huggingface_hub import notebook_login
+from huggingface_hub import notebook_login
  
-#notebook_login()
+notebook_login()
  
-#model.push_to_hub("curiousily/alpaca-bitcoin-tweets-sentiment-bkascript", use_auth_token=True)
+model.push_to_hub("curiousily/alpaca-bitcoin-tweets-sentiment-bkascript", use_auth_token=True)
