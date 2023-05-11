@@ -23,6 +23,8 @@ import matplotlib as mpl
 from pylab import rcParams
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1" 
  
 base_model: str = "decapoda-research/llama-7b-hf"
 tokenizer = LlamaTokenizer.from_pretrained(base_model)
@@ -135,6 +137,14 @@ training_arguments = transformers.TrainingArguments(
 data_collator = transformers.DataCollatorForSeq2Seq(
     tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
 )
+
+world_size = int(os.environ.get("WORLD_SIZE", 1))
+ddp = world_size != 1
+if not ddp and torch.cuda.device_count() > 1:
+        # keeps Trainer from trying its own DataParallelism when more than 1 gpu is available
+        model.is_parallelizable = True
+        model.model_parallel = True
+
 
 trainer = transformers.Trainer(
     model=model,
