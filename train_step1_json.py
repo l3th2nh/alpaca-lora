@@ -19,13 +19,10 @@ import pandas as pd
  
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import seaborn as sns
+
 from pylab import rcParams
  
 
-sns.set(rc={'figure.figsize':(10, 7)})
-sns.set(rc={'figure.dpi':100})
-sns.set(style='white', palette='muted', font_scale=1.2)
  
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
