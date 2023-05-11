@@ -22,6 +22,8 @@ import matplotlib as mpl
 
 from pylab import rcParams
  
+base_model: str = "decapoda-research/llama-7b-hf"
+tokenizer = LlamaTokenizer.from_pretrained(base_model)
 
 data = load_dataset("json", data_files="alpaca-bitcoin-sentiment-dataset.json")
 
