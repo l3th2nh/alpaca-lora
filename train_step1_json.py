@@ -41,8 +41,8 @@ def sentiment_score_to_name(score: float):
 dataset_data = [
     {
         "instruction": "Detect the sentiment of the tweet.",
-        "input": row_dict["tweet"],
-        "output": sentiment_score_to_name(row_dict["sentiment"])
+        "input": row_dict["Tweet"],
+        "output": sentiment_score_to_name(row_dict["Sentiment"])
     }
     for row_dict in df.to_dict(orient="records")
 ]
