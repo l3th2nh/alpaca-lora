@@ -140,10 +140,7 @@ data_collator = transformers.DataCollatorForSeq2Seq(
 
 world_size = int(os.environ.get("WORLD_SIZE", 1))
 ddp = world_size != 1
-if not ddp and torch.cuda.device_count() > 1:
-        # keeps Trainer from trying its own DataParallelism when more than 1 gpu is available
-        model.is_parallelizable = True
-        model.model_parallel = True
+
 
 
 trainer = transformers.Trainer(
@@ -162,6 +159,11 @@ model.state_dict = (
 ).__get__(model, type(model))
  
 model = torch.compile(model)
+
+if not ddp and torch.cuda.device_count() > 1:
+        # keeps Trainer from trying its own DataParallelism when more than 1 gpu is available
+        model.is_parallelizable = True
+        model.model_parallel = True
  
 trainer.train()
 model.save_pretrained(OUTPUT_DIR)
