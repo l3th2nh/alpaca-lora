@@ -22,21 +22,52 @@ import matplotlib as mpl
 
 from pylab import rcParams
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+if torch.cuda.is_available():
+    device = "cuda"
+else:
+    device = "cpu"
+
+try:
+    if torch.backends.mps.is_available():
+        device = "mps"
+except:  # noqa: E722
+    pass
+
 
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1" 
  
 base_model: str = "decapoda-research/llama-7b-hf"
-tokenizer = LlamaTokenizer.from_pretrained(base_model)
-if tokenizer.pad_token is None:
-    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
-model = LlamaForCausalLM.from_pretrained(
+tokenizer = LlamaTokenizer.from_pretrained(base_model)
+if device == "cuda":
+    model = LlamaForCausalLM.from_pretrained(
         base_model,
         load_in_8bit=True,
         torch_dtype=torch.float16,
         device_map="auto",
     )
+    
+elif device == "mps":
+    model = LlamaForCausalLM.from_pretrained(
+        base_model,
+        device_map={"": device},
+        torch_dtype=torch.float16,
+    )
+    
+else:
+    model = LlamaForCausalLM.from_pretrained(
+        base_model, device_map={"": device}, low_cpu_mem_usage=True
+    )
+    
+
+# unwind broken decapoda-research config
+model.config.pad_token_id = tokenizer.pad_token_id = 0  # unk
+model.config.bos_token_id = 1
+model.config.eos_token_id = 2
+
+if tokenizer.pad_token is None:
+    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+
 
 data = load_dataset("json", data_files="alpaca-bitcoin-sentiment-dataset.json")
 
