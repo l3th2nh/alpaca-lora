@@ -24,6 +24,8 @@ from pylab import rcParams
  
 base_model: str = "decapoda-research/llama-7b-hf"
 tokenizer = LlamaTokenizer.from_pretrained(base_model)
+if tokenizer.pad_token is None:
+    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
 model = LlamaForCausalLM.from_pretrained(
         base_model,
