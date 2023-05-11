@@ -25,6 +25,13 @@ from pylab import rcParams
 base_model: str = "decapoda-research/llama-7b-hf"
 tokenizer = LlamaTokenizer.from_pretrained(base_model)
 
+model = LlamaForCausalLM.from_pretrained(
+        base_model,
+        load_in_8bit=True,
+        torch_dtype=torch.float16,
+        device_map="auto",
+    )
+
 data = load_dataset("json", data_files="alpaca-bitcoin-sentiment-dataset.json")
 
 def generate_prompt(data_point):
@@ -36,6 +43,7 @@ def generate_prompt(data_point):
 ### Response:
 {data_point["output"]}"""
  
+CUTOFF_LEN: int = 256
  
 def tokenize(prompt, add_eos_token=True):
     result = tokenizer(
