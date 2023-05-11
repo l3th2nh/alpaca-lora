@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 from pylab import rcParams
+
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
  
 base_model: str = "decapoda-research/llama-7b-hf"
 tokenizer = LlamaTokenizer.from_pretrained(base_model)
