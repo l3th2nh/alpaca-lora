@@ -22,6 +22,7 @@ import matplotlib as mpl
 
 from pylab import rcParams
  
+import logging
 
  
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -32,6 +33,8 @@ df.head()
 
 
 def sentiment_score_to_name(score: float):
+    logging.debug('This is a debug message - '+score)
+    score = float(score)
     if score > 0:
         return "Positive"
     elif score < 0:
