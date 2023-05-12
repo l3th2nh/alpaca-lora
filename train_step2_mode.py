@@ -200,9 +200,9 @@ trainer.train()
 model.save_pretrained(OUTPUT_DIR)
 
 
-
+#huggingface-cli login
 from huggingface_hub import notebook_login
  
 notebook_login()
  
-model.push_to_hub("curiousily/alpaca-bitcoin-tweets-sentiment-bkascript", use_auth_token=True)
+model.push_to_hub("devFacebooks/trainai", use_auth_token=True)

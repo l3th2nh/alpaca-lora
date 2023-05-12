@@ -13,3 +13,5 @@ gradio
 datasets
 torch
 tensorboardX
+ipywidgets
+huggingface_hub
